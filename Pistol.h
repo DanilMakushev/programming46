@@ -16,7 +16,7 @@ public:
            bool isConcealable, const std::vector<std::string>& holsters)
         : AbstractFireWeapon(name, price, weight, caliber, fireType,
                              magazineCapacity, rateOfFire, initialBulletVelocity, aimingRange),
-        _isConcealable(isConcealable), _holsters(holsters) {}
+          _isConcealable(isConcealable), _holsters(holsters) {}
 
     bool IsConcealable() const { return _isConcealable; }
     const std::vector<std::string>& GetHolsters() const { return _holsters; }
