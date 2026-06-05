@@ -5,26 +5,16 @@ project(WeaponSystem)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Включаем автоматическую генерацию мета-информации Qt
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-# Поиск пакета Qt (Скрипт поддерживает как Qt6, так и Qt5)
-find_package(Qt6 COMPONENTS Widgets QUIET)
-if(NOT Qt6_FOUND)
-    find_package(Qt5 COMPONENTS Widgets REQUIRED)
-    set(QT_LIBRARIES Qt5::Widgets)
-else()
-    set(QT_LIBRARIES Qt6::Widgets)
-endif()
+find_package(Qt6 COMPONENTS Widgets Test QUIET)
+set(QT_LIBRARIES Qt6::Widgets)
+set(QT_TEST_LIBRARIES Qt6::Test)
 
-add_executable(WeaponQtApp
-    main.cpp
-    mainwindow.h
-    mainwindow.cpp
-    AddEditForm.h
-    AddEditForm.cpp
+
+set(WEAPON_LOGIC_SOURCES
     AbstractWeapon.h
     AbstractFireWeapon.h
     ColdSteel.h
@@ -35,8 +25,21 @@ add_executable(WeaponQtApp
     PistolFactory.h
     RifleFactory.h
     MilitaryUnit.h
-    mainwindow.ui
 )
 
-# Линкуем модули Qt к нашему исполняемому файлу
+add_executable(WeaponQtApp
+    main.cpp
+    mainwindow.h
+    mainwindow.cpp
+    AddEditForm.h
+    AddEditForm.cpp
+    mainwindow.ui
+    ${WEAPON_LOGIC_SOURCES}
+)
 target_link_libraries(WeaponQtApp PRIVATE ${QT_LIBRARIES})
+
+add_executable(WeaponTests
+    testsWeapon.cpp
+    ${WEAPON_LOGIC_SOURCES}
+)
+target_link_libraries(WeaponTests PRIVATE ${QT_LIBRARIES} ${QT_TEST_LIBRARIES})
